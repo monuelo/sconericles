@@ -49,6 +49,17 @@ python3 memdump.py $SPID > fib.dump
 ```
 
 
+#### Extra: Flask-API
+```
+python3 flask-api.py
+```
+
+```
+curl -X POST -H "Content-Type: application/json" \
+ -d '{"test":"ThisIsASecret"}' \
+ http://localhost:5000
+```
+
 ### Using cast-sh to stream the environment
 In the cast-sh directory, run:
 ```
