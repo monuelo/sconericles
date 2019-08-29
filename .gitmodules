@@ -1,0 +1,3 @@
+[submodule "cast-sh"]
+	path = cast-sh
+	url = https://github.com/hericlesme/cast-sh
