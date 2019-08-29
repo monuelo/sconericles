@@ -16,7 +16,7 @@ def cat_proc_mem(pid):
         if r[2] == 'r':
             mem_file.seek(r[0])
             chunk = mem_file.read(r[1] - r[0])
-            print chunk,
+            print(chunk)
     mem_file.close()
 
 if __name__ == "__main__":
