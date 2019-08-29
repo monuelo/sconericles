@@ -30,9 +30,22 @@ SCONE_ALPINE=1 SCONE_VERSION=1 SCONE_MODE=sim ./fib.c [a large number] > /dev/nu
 SCONE_ALPINE=1 SCONE_VERSION=1 SCONE_MODE=hw ./fib.c [a large number] > /dev/null & 
 ```
 
+
+##### Get the PID and dump
+
+```
+SPID=$(ps -a | grep -v grep | grep [process name] | awk  '{print $1}')
+```
+
+
+Using the `dumpstack.py` script and the `PID` of the process, run:
+```
+python dumpstack.py $SPID | strings -n [min-size] | grep [secret]
+```
+
 Using the `memdump.py` script and the `PID` of the process, run:
 ```
-python3 memdump.py [PID] > fib.dump
+python3 memdump.py $SPID > fib.dump
 ```
 
 
