@@ -1,29 +1,6 @@
-import os
-import subprocess
 import kubernetes as kube
 
 client = kube.client
-containers = []
-
-
-def run(image, command):
-    command = ('docker run -dt '
-               '--device /dev/isgx '
-               '--network=host %s %s ' %
-               (image, command))
-    execution = subprocess.Popen([command], shell=True,
-                                 stdout=subprocess.PIPE,
-                                 stderr=open(os.devnull, 'w'))
-    container_id = str(execution.communicate()[0].decode()).strip()
-
-    containers.append(container_id)
-
-    print(container_id)
-
-# run('sconericles:latest', '/bin/bash')
-# run('sconericles:latest', '/bin/bash')
-
-# print(containers)
 
 
 def create_job(app_id, cmd, img):
@@ -83,30 +60,31 @@ def create_job(app_id, cmd, img):
 
 def create_service(app_id):
     api = kube.client.CoreV1Api()
-    svc_spec = {
-        "apiVersion": "v1",
-        "kind": "Service",
-        "metadata": {
-            "name": 'service-' + app_id,
-            "labels": {
-                "app": 'service-' + app_id
-            }
-        },
-        "spec": {
-            "ports": [{
-                "protocol": "TCP",
-                "port": 5000,
-                "targetPort": 5000
-            }],
-            "selector": {
-                "app": 'service-' + app_id
-            },
-            "type": "NodePort"
+
+    svc_meta = {
+        "name": 'service-' + app_id,
+        "labels": {
+            "app": 'service-' + app_id
         }
     }
-    svc = kube.client.V1Service(spec=svc_spec)
+
+    svc_spec = {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5000,
+            "targetPort": 5000
+        }],
+        "selector": {
+            "app": 'service-' + app_id
+        },
+        "type": "NodePort"
+    }
+    svc = kube.client.V1Service(
+        spec=svc_spec, api_version="v1", kind="Service", metadata=svc_meta)
+
     print('Creating service...')
-    api.create_namepaced_service(namespace='default', body=svc)
+
+    api.create_namespaced_service(namespace='default', body=svc)
 
 
 app_id = 'sconericles'
