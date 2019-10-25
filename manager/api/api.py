@@ -15,7 +15,9 @@ def main():
 def create_container():
     if request.method == 'POST':
         data = json.loads(request.data)
-        
+        app_id = 'sconericles'
+        controller.create_job(app_id, ['/bin/bash'], '10.11.5.6:5000/sconericles:cast')
+        controller.create_service(app_id)
         return api.post(request.json)
 
 if __name__ == '__main__':
