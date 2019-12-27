@@ -5,7 +5,7 @@ client = kube.client
 
 def create_job(app_id, cmd, img):
 
-    kube.config.load_kube_config('/home/hericles/.kube/config-prod')
+    kube.config.load_kube_config('/home/pickle/.kube/config')
 
     obj_meta = kube.client.V1ObjectMeta(
         name=app_id)
@@ -90,4 +90,4 @@ def create_service(app_id):
 app_id = 'sconericles'
 create_job(app_id, ['/bin/bash'], '10.11.5.6:5000/sconericles:cast')
 
-create_service(app_id)
+#create_service(app_id)
